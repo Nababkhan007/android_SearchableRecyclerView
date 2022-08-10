@@ -12,13 +12,14 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import com.khan.searchablerecyclerview.R;
 import com.khan.searchablerecyclerview.adapter.RecyclerAdapter;
 import com.khan.searchablerecyclerview.databinding.ActivityMainBinding;
+import com.khan.searchablerecyclerview.model.Footballer;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
-    private List<String> moviesList;
+    private List<Footballer> footballerList;
     private RecyclerAdapter recyclerAdapter;
 
     @Override
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setMoviesData() {
-        recyclerAdapter = new RecyclerAdapter(moviesList);
+        recyclerAdapter = new RecyclerAdapter(this, footballerList);
         binding.recyclerView.setAdapter(recyclerAdapter);
         DividerItemDecoration dividerItemDecoration = new
                 DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
@@ -43,33 +44,55 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addMovies() {
-        moviesList.add("Iron Man");
-        moviesList.add("The Incredible Hulk");
-        moviesList.add("Iron Man 2");
-        moviesList.add("Thor");
-        moviesList.add("Captain America: The First Avenger");
-        moviesList.add("The Avengers");
-        moviesList.add("Iron Man 3");
-        moviesList.add("Thor: The Dark World");
-        moviesList.add("Captain America: The Winter Soldier");
-        moviesList.add("Guardians of the Galaxy");
-        moviesList.add("Avengers: Age of Ultron");
-        moviesList.add("Ant-Man");
-        moviesList.add("Captain America: Civil War");
-        moviesList.add("Doctor Strange");
-        moviesList.add("Guardians of the Galaxy Vol. 2");
-        moviesList.add("Spider-Man: Homecoming");
-        moviesList.add("Thor: Ragnarok");
-        moviesList.add("Black Panther");
-        moviesList.add("Avengers: Infinity War");
-        moviesList.add("Ant-Man and the Wasp");
-        moviesList.add("Captain Marvel");
-        moviesList.add("Avengers: Endgame");
-        moviesList.add("Spider-Man: Far From Home");
+        footballerList.add(new Footballer(R.drawable.cristiano_ronaldo,
+                "Cristiano Ronaldo", "37 years",
+                "6 ft 2 in", "7",
+                "Forward", "Portugal",
+                "Manchester United", "Portugal"));
+        footballerList.add(new Footballer(R.drawable.lionel_messi,
+                "Lionel Messi", "35 years",
+                "5 ft 7 in", "30",
+                "Forward", "Argentina",
+                "Paris Saint-Germain", "Argentina"));
+        footballerList.add(new Footballer(R.drawable.neymar,
+                "Neymar", "30 years",
+                "5 ft 9 in", "10",
+                "Forward", "Brazil",
+                "Paris Saint-Germain", "Brazil"));
+        footballerList.add(new Footballer(R.drawable.mohamed_salah,
+                "Mohamed Salah", "30 years",
+                "5 ft 9 in", "11",
+                "Forward, Winger", "Egypt",
+                "Liverpool", "Egypt"));
+        footballerList.add(new Footballer(R.drawable.kylian_mbappe,
+                "Kylian Mbappé", "23 years",
+                "5 ft 10 in", "7",
+                "Forward", "France",
+                "Paris Saint-Germain", "France"));
+        footballerList.add(new Footballer(R.drawable.thiago_silva,
+                "Thiago Silva", "37 years",
+                "5 ft 11 in", "3",
+                "Centre-back", "Brazil",
+                "Chelsea", "Brazil"));
+        footballerList.add(new Footballer(R.drawable.kevin_de_bruyne,
+                "Kevin De Bruyne", "31 years",
+                "5 ft 11 in", "17",
+                "Midfielder", "Belgium",
+                "Manchester City", "Belgium"));
+        footballerList.add(new Footballer(R.drawable.marcelo_vieira,
+                "Marcelo Vieira", "34 years",
+                "5 ft 9 in", "12",
+                "Left-back", "Brazil",
+                "Real Madrid", "Brazil"));
+        footballerList.add(new Footballer(R.drawable.alisson_becker,
+                "Alisson Becker", "29 years",
+                "6 ft 3 in", "1",
+                "Goalkeeper", "Brazil",
+                "Liverpool", "Brazil"));
     }
 
     private void init() {
-        moviesList = new ArrayList<>();
+        footballerList = new ArrayList<>();
     }
 
     private void bindingInit() {

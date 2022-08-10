@@ -1,8 +1,8 @@
 package com.khan.searchablerecyclerview.adapter;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -13,41 +13,70 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.khan.searchablerecyclerview.R;
-import com.khan.searchablerecyclerview.databinding.RowItemBinding;
+import com.khan.searchablerecyclerview.databinding.ModelListItemBinding;
+import com.khan.searchablerecyclerview.model.Footballer;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> implements Filterable {
-    private final List<String> moviesList;
-    private final List<String> moviesListAll;
+public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder>
+        implements Filterable {
+    private final Context context;
+    private final List<Footballer> footballerList;
+    private final List<Footballer> footballerListAll;
 
-    public RecyclerAdapter(List<String> moviesList) {
-        this.moviesList = moviesList;
-        this.moviesListAll = new ArrayList<>(moviesList);
+    public RecyclerAdapter(Context context, List<Footballer> footballerList) {
+        this.context = context;
+        this.footballerList = footballerList;
+        this.footballerListAll = new ArrayList<>(footballerList);
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        RowItemBinding rowItemBinding = DataBindingUtil.inflate(
+        ModelListItemBinding binding = DataBindingUtil.inflate(
                 LayoutInflater.from(viewGroup.getContext()),
-                R.layout.row_item, viewGroup, false);
+                R.layout.model_list_item, viewGroup, false);
 
-        return new ViewHolder(rowItemBinding);
+        return new ViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.rowItemBinding.rowCountTextView.setText(String.valueOf(position));
-        holder.rowItemBinding.textView.setText(moviesList.get(position));
+        Footballer footballer = footballerList.get(position);
+        holder.binding.imageView.setImageResource(footballer.getImage());
+        holder.binding.nameTv.setText(footballer.getName());
+        holder.binding.ageTv.setText(context.getString(R.string.age_concatenate,
+                footballer.getAge()));
+        holder.binding.heightTv.setText(context.getString(R.string.height_concatenate,
+                footballer.getHeight()));
+        holder.binding.jerseyNumberTv.setText(context.getString(R.string.jersey_number_concatenate,
+                footballer.getJerseyNumber()));
+        holder.binding.positionTv.setText(context.getString(R.string.position_concatenate,
+                footballer.getPosition()));
+        holder.binding.nationalTeamTv.setText(context.getString(R.string.national_team_concatenate,
+                footballer.getNationalTeam()));
+        holder.binding.clubTeamTv.setText(context.getString(R.string.club_team_concatenate,
+                footballer.getClubTeam()));
+        holder.binding.countryTv.setText(context.getString(R.string.country_concatenate,
+                footballer.getCountry()));
+
+        holder.binding.modelRootLayout.setOnClickListener(v ->
+                Toast.makeText(context, "" + footballer.getName(),
+                        Toast.LENGTH_SHORT).show());
+
+        holder.binding.modelRootLayout.setOnLongClickListener(view -> {
+            footballerList.remove(position);
+            notifyItemRemoved(position);
+            return true;
+        });
     }
 
     @Override
     public int getItemCount() {
-        return moviesList.size();
+        return footballerList.size();
     }
 
     @Override
@@ -58,16 +87,30 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     Filter filter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence charSequence) {
-            List<String> filteredList = new ArrayList<>();
+            List<Footballer> filteredList = new ArrayList<>();
 
             if (charSequence.toString().isEmpty()) {
-                filteredList.addAll(moviesListAll);
+                filteredList.addAll(footballerListAll);
 
             } else {
-                for (String movie : moviesListAll) {
-                    if (movie.toLowerCase(Locale.ROOT)
+                for (Footballer footballer : footballerListAll) {
+                    if (footballer.getName().toLowerCase(Locale.ROOT)
+                            .contains(charSequence.toString().toLowerCase(Locale.ROOT))
+                            || footballer.getAge().toLowerCase(Locale.ROOT)
+                            .contains(charSequence.toString().toLowerCase(Locale.ROOT))
+                            || footballer.getHeight().toLowerCase(Locale.ROOT)
+                            .contains(charSequence.toString().toLowerCase(Locale.ROOT))
+                            || footballer.getJerseyNumber().toLowerCase(Locale.ROOT)
+                            .contains(charSequence.toString().toLowerCase(Locale.ROOT))
+                            || footballer.getPosition().toLowerCase(Locale.ROOT)
+                            .contains(charSequence.toString().toLowerCase(Locale.ROOT))
+                            || footballer.getNationalTeam().toLowerCase(Locale.ROOT)
+                            .contains(charSequence.toString().toLowerCase(Locale.ROOT))
+                            || footballer.getClubTeam().toLowerCase(Locale.ROOT)
+                            .contains(charSequence.toString().toLowerCase(Locale.ROOT))
+                            || footballer.getCountry().toLowerCase(Locale.ROOT)
                             .contains(charSequence.toString().toLowerCase(Locale.ROOT))) {
-                        filteredList.add(movie);
+                        filteredList.add(footballer);
                     }
                 }
             }
@@ -80,32 +123,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         @SuppressLint("NotifyDataSetChanged")
         @Override
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-            moviesList.clear();
-            moviesList.addAll((Collection<? extends String>) filterResults.values);
+            footballerList.clear();
+            footballerList.addAll((Collection<? extends Footballer>) filterResults.values);
             notifyDataSetChanged();
         }
     };
 
-    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private final RowItemBinding rowItemBinding;
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        private final ModelListItemBinding binding;
 
-        ViewHolder(@NonNull RowItemBinding rowItemBinding) {
-            super(rowItemBinding.getRoot());
-            this.rowItemBinding = rowItemBinding;
-
-            itemView.setOnClickListener(this);
-
-            itemView.setOnLongClickListener(view -> {
-                moviesList.remove(getAdapterPosition());
-                notifyItemRemoved(getAdapterPosition());
-                return true;
-            });
-        }
-
-        @Override
-        public void onClick(View view) {
-            Toast.makeText(view.getContext(),
-                    moviesList.get(getAdapterPosition()), Toast.LENGTH_SHORT).show();
+        ViewHolder(@NonNull ModelListItemBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
     }
 }
