@@ -1,4 +1,20 @@
 <resources>
     <string name="app_name">SearchableRecyclerView</string>
     <string name="search">Search</string>
+    <string name="name">Name</string>
+    <string name="name_concatenate">Name: %s</string>
+    <string name="age">Age</string>
+    <string name="age_concatenate">Age: %s</string>
+    <string name="height">Height</string>
+    <string name="height_concatenate">Height: %s</string>
+    <string name="jersey_number">Jersey Number</string>
+    <string name="jersey_number_concatenate">Jersey Number: %s</string>
+    <string name="position">Position</string>
+    <string name="position_concatenate">Position: %s</string>
+    <string name="national_team">National Team</string>
+    <string name="national_team_concatenate">National Team: %s</string>
+    <string name="club_team">Club Team</string>
+    <string name="club_team_concatenate">Club Team: %s</string>
+    <string name="country">Country</string>
+    <string name="country_concatenate">Country: %s</string>
 </resources>
